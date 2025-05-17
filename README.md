@@ -1,1 +1,131 @@
-# t2-geometria
+# Tarea 1 Geometría Computacional
+
+Este código corresponde a la Tarea 1 - Introducción a C++ de Nicolás Escobar Zarzar alumno del curso CC5502 Geometría Computacional del semestre otoño 2025.
+Esta tarea consiste en programar las clases `Punto`, `Vector` y `Poligono` junto a una serie de métodos que permitan relizar operaciones sobre estas clases, tales como, la distancia entre dos puntos, la magnitud de un vector, el producto punto entre 2 vectores, el producto cruz entre 2 vectores, el área de un polígono, la orientación de un polígono entre otros.\
+Fue desarrollada usando Visual Studio Code en Windows, pero a continuación se dan las instrucciones para su compilación y ejecución en cualquier entorno de escritorio (Windows, Linux, MacOS).
+
+## Herramientas necesarias
+
+### g++
+Es necesario tener instalado el compilador GNU g++ versión 14.2.0, el cual se puede instalar mediante [MSYS2](https://www.msys2.org/) en Windows o mediante el gestor de paquetes que corresponda en Linux:
+
+
+Debian / Ubuntu / Pop!_OS / Linux Mint
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+Arch Linux / Manjaro
+```bash
+sudo pacman -S --needed base-devel
+```
+Fedora / RHEL / CentOS (8+) / Rocky Linux / AlmaLinux
+```bash
+sudo dnf groupinstall "Development Tools"
+``` 
+CentOS 7
+```bash
+sudo yum groupinstall "Development Tools"
+```
+openSUSE
+```bash
+sudo zypper install -t pattern devel_basis
+```
+Gentoo
+```bash
+sudo emerge --ask sys-devel/gcc sys-devel/make sys-devel/binutils
+```
+Void Linux
+```bash
+sudo xbps-install -S base-devel
+```
+Alpine Linux
+```bash
+sudo apk add build-base
+```
+
+En macOS se puede obtener mediante [Homebrew](https://brew.sh/)
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install make gcc g++
+```
+### CMake
+Para compilar esta librería se necesita CMake 3.31, este se puede descargar desde [la página de CMake](https://cmake.org/download/) o mediante el gestor de paquetes (no se recomienda, pues no se puede asegurar la versión correcta de CMake).\
+Si se está en Windows podría ser necesario agregar la carpeta `bin` de la instalación de CMake a la variable de entorno `$PATH` de forma manual.
+
+## Configuración
+
+Esta libería se debe compilar en Windows con el generador `MinGW Makefiles` y en Linux/macOs con el generador `Unix Makefiles` usando el compilador GNU g++ version 14.2.0\
+Para ello se deben configurar las siguientes variables de entorno:
++ CC: Ruta al compilador de lenguaje C, por defecto con una instalación estándar de MSYS2 es `C:\msys64\ucrt64\bin\gcc.exe`, en linux `/usr/bin/gcc`.
++ CXX: Ruta al compilador de lenguaje C++, por defecto con una instalación estándar de MSYS2 es `C:\msys64\ucrt64\bin\g++.exe`, en linux `/usr/bin/g++`.
++ CMAKE_GENERATOR: `"MinGW Makefiles"` o `"Unix Makefiles"` según corresponda.
+
+Para dejar estas variables configuradas durante la sesión actual de terminal se debe ingresar lo siguiente en su terminal de preferencia.
+
+### cmd
+```
+> set CC=C:\msys64\ucrt64\bin\gcc.exe
+> set CXX=C:\msys64\ucrt64\bin\g++.exe
+> set CMAKE_GENERATOR="MinGW Makefiles"
+```
+### powershell
+```pwsh
+> $env:CC="C:\msys64\ucrt64\bin\gcc.exe"
+> $env:CXX="C:\msys64\ucrt64\bin\g++.exe"
+> $env:CMAKE_GENERATOR="MinGW Makefiles"
+```
+### bash
+```bash
+$ export CC=/usr/bin/gcc
+$ export CXX=/usr/bin/g++
+$ export CMAKE_GENERATOR="Unix Makefiles"
+```
+
+De no configurarse dichas variables de entorno, se pueden también configurar para una invocación única de CMake mediante los siguientes argumentos:
+```bash
+$ cmake -DCC=/usr/bin/gcc -DCXX=/usr/bin/g++ -DCMAKE_GENERATOR="Unix Makefiles" <comando>
+```
+(Reemplazar los valores de cada variable según el sistema operativo que corresponda).
+
+# Compilación
+Habiendo hecho la configuración basta con ejecutar los siguientes comandos en una terminal estando en la carpeta raíz del projecto:
+```bash
+$ cmake -S . -B build/release
+$ cmake --build build/release
+```
+Esto generará las librerías estáticas en `build/src` con los nombres `libpunto`, `libvector` y `libpoligono` con la extensión que corresponda y también el archivo
+`Tarea1.exe`. Adicionalmente este comando compilará los tests.
+
+Notar que si se desea hacer debugging o revisar el porcentaje de coverage es necesario configurar la flag `CMAKE_BUILD_TYPE` con el valor `Debug` para compilar la librería con los simbolos correspondientes de la siguiente manera:
+```bash
+$ cmake -DCMAKE_BUILD_TYPE=Debug -S . -B build/debug
+$ cmake --build build/debug
+```
+Esto creara la librería en la carpeta `/build/debug/src` y los archivos con extension `gcda` y `gcno` creados por gcov
+
+# Tests
+Los tests se encuentran en `test/punto_test.cc`, `test/vector_test.cc` y `test/poligono_test.cc`, una vez se compila el proyecto, se generan ejecutables con los nombres anteriores en `build/release/test/` o `build/debug/test` los cuales pueden ejecutarse estando en la carpeta correspondiente con el comando:
+```bash
+$ ctest
+```
+O alternativamente desde la carpeta raíz del proyecto con
+```bash
+$ ctest --test-dir ./build/debug/test/
+```
+(Usar \\ en vez de / en windows)
+
+## Coverage
+Si se desea ver el porcentaje de coverage del código se necesita instalar python3.9+ y el paquete [gcovr](https://github.com/gcovr/gcovr) mediante el comando
+```bash
+$ python -m pip install gcovr
+``` 
+Una vez se hace la build y se corren los tests al menos una vez hay que ir al archivo `gcovr.cfg` y cambiar el valor de la llave `gcovr-executable` a la ruta de la herramienta `gcov` que viene junto con el compilador `gcc/g++`, su equivalente en el compilador `clang` es `llvm-cov gcov`. Una vez hecho esto, ejecutar el comando
+```bash
+$ gcovr
+```
+En la raíz del proyecto lo que generará un archivo `coverage.html` en la carpeta `build` con los detalles de coverage en una página web.
+
+
+Por conveniencia se dejan los scripts `coverage.sh` y `coverage.ps1` que al ejecutarse, según el sistema operativo que corresponda, correran los comandos necesarios de `cmake`, `ctest` y `gcovr`. \
+Notar que este script asume que las variables de entorno ya están configuradas correctamente.

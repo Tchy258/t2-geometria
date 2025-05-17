@@ -1,0 +1,23 @@
+
+add_library(punto STATIC punto.cpp)
+add_library(vector STATIC vector.cpp punto.cpp)
+add_library(poligono STATIC poligono.cpp vector.cpp punto.cpp)
+target_include_directories(punto PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(vector PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(poligono PUBLIC ${PROJECT_SOURCE_DIR}/include)
+
+add_executable(Tarea2 main.cpp)
+target_link_libraries(Tarea2 punto)
+target_link_libraries(Tarea2 vector)
+target_link_libraries(Tarea2 poligono)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_options(punto PRIVATE --coverage)
+    target_link_options(punto PRIVATE --coverage)
+    target_compile_options(vector PRIVATE --coverage)
+    target_link_options(vector PRIVATE --coverage)
+    target_compile_options(poligono PRIVATE --coverage)
+    target_link_options(poligono PRIVATE --coverage)
+    target_compile_options(Tarea2 PRIVATE --coverage)
+    target_link_options(Tarea2 PRIVATE --coverage)
+endif()
