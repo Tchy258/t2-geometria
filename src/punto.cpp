@@ -45,6 +45,11 @@ double Punto<T>::distancia(Punto<T>& p)
 }
 
 template <class T>
+Punto<T> Punto<T>::operator-(const Punto<T> &other) const {
+    return Punto<T>(getX() - other.getX(), getY() - other.getY(), getZ() - other.getZ());
+}
+
+template <class T>
 bool Punto<T>::operator==(const Punto<T> &other) const
 {
     return Punto<T>::equal_within_ulps(getX(),other.getX()) && Punto<T>::equal_within_ulps(getY(),other.getY()) && Punto<T>::equal_within_ulps(getZ(),other.getZ());

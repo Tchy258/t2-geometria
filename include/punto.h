@@ -52,6 +52,7 @@ class Punto
         const T getZ() const;
         double distancia(Punto<T> &p);
         bool operator==(const Punto<T> &other) const; // El último const es necesario para que gtest funcione
+        Punto<T> operator-(const Punto<T> &other) const;
         template <class U>
         friend std::ostream& operator<<(std::ostream& os, const Punto<U>& p);
 };
