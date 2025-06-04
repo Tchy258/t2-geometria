@@ -1,7 +1,7 @@
-# Tarea 1 Geometría Computacional
+# Tarea 2 y 3 Geometría Computacional
 
-Este código corresponde a la Tarea 1 - Introducción a C++ de Nicolás Escobar Zarzar alumno del curso CC5502 Geometría Computacional del semestre otoño 2025.
-Esta tarea consiste en programar las clases `Punto`, `Vector` y `Poligono` junto a una serie de métodos que permitan relizar operaciones sobre estas clases, tales como, la distancia entre dos puntos, la magnitud de un vector, el producto punto entre 2 vectores, el producto cruz entre 2 vectores, el área de un polígono, la orientación de un polígono entre otros.\
+Este código corresponde a la Tarea 2 y 3 - Cerradura Convexa de Nicolás Escobar Zarzar alumno del curso CC5502 Geometría Computacional del semestre otoño 2025.
+Esta tarea consiste en programar dos algoritmos de cerradura convexa haciendo uso de las clases hechas en la Tarea 1, los algoritmos a implementar son GiftWrapping y Divide and Conquer. Esto se hace mediante la implementación del patrón de diseño _strategy_ usando la clase `ConvexHullStrategy` como base. También se pide diseñar un experimento para determinar para que distribuciones de punto es mejor usar uno u otro, junto con un método que genere una lista aleatoria de n puntos y otro que genere un conjunto de puntos en que un cierto porcentaje de estos forme parte de la cerradura convexa y el resto se distribuya aleatoriamente en el interior, también usando el patrón strategy con la clase `PointGenerationStrategy`
 Fue desarrollada usando Visual Studio Code en Windows, pero a continuación se dan las instrucciones para su compilación y ejecución en cualquier entorno de escritorio (Windows, Linux, MacOS).
 
 ## Herramientas necesarias
