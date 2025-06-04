@@ -17,6 +17,7 @@ class Vector
         T productoPunto(Vector<T>& other);
         Vector<T> productoCruz(Vector<T>& other);
         Vector<T> operator+(const Vector<T>& other);
+        Vector<T> operator-() const;
         bool operator==(const Vector<T>& other) const;
         Vector<T> operator*(T scalar);
         template <class U>

@@ -59,6 +59,11 @@ Vector<T> Vector<T>::operator+(const Vector<T>& other)
 }
 
 template <typename T>
+Vector<T> Vector<T>::operator-() const {
+    return Vector<T>(-coords.getX(), -coords.getY(), -coords.getZ());
+}
+
+template <typename T>
 bool Vector<T>::operator==(const Vector<T>& other) const
 {
     return coords == other.getCoords();
