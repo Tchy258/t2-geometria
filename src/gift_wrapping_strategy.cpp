@@ -35,7 +35,7 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         }
     }
     unsigned long long firstIndex = pointOnHullIndex;
-    std::bitset<n> pointsUsed;
+    std::vector<bool> pointsUsed(n,false);
     pointsUsed[pointOnHullIndex] = true;
     Vector<T> arcoPrevio(1,0);
     do {
@@ -43,13 +43,13 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         unsigned long long k = firstIndex;
         T mejorProductoCruz = safe_infinity_cast<T>();
         for (unsigned long long j = 0; j < n; ++j) {
-            if (j == pointOnHullIndex || pointsUsed.test(j)) != convexHull.end()) continue;
+            if (j == pointOnHullIndex || pointsUsed[j]) continue;
             Vector<T> nuevoArco = Vector<T>(cloud[j] - cloud[pointOnHullIndex]);
             T nuevoProductoCruz = arcoPrevio.productoCruz(nuevoArco).getCoords().getZ();
             if (mejorProductoCruz > nuevoProductoCruz || 
                 mejorProductoCruz == nuevoProductoCruz && nuevoArco.magnitud() > (Vector<T>(cloud[k] - cloud[pointOnHullIndex]).magnitud())) {
                 k = j;
-                pointsUsed.set(j);
+                pointsUsed[j] = true;
                 mejorProductoCruz = nuevoProductoCruz;
             }
         }
