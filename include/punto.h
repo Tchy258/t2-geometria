@@ -1,7 +1,6 @@
 #ifndef _PUNTO_H
 #define _PUNTO_H
 #include<limits>
-#include<cmath>
 #include<ostream>
 #include<cmath>
 #include<utility>
