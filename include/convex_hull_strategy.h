@@ -8,7 +8,7 @@ template <typename T>
 class ConvexHullStrategy {
     public:
         virtual ~ConvexHullStrategy() = default;
-        virtual Poligono<T> apply(Punto<T> cloud[]) = 0;
+        virtual Poligono<T> apply(std::vector<Punto<T>> &cloud) = 0;
 };
 
 #endif
