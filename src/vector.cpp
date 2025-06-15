@@ -26,6 +26,12 @@ double Vector<T>::magnitud()
 }
 
 template <typename T>
+T Vector<T>::magnitud2() {
+    // Producto punto consigo mismo es magnitud al cuadrado
+    return this->productoPunto(*this);
+}
+
+template <typename T>
 T Vector<T>::productoPunto(Vector<T>& other)
 {
     return coords.getX() * other.getCoords().getX() + coords.getY() * other.getCoords().getY() + coords.getZ() * other.getCoords().getZ();
