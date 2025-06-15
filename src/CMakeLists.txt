@@ -1,23 +1,27 @@
+set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
 add_library(punto STATIC punto.cpp)
-add_library(vector STATIC vector.cpp punto.cpp)
-add_library(poligono STATIC poligono.cpp vector.cpp punto.cpp)
-add_library(gift_wrapping_strategy STATIC gift_wrapping_strategy.cpp poligono.cpp vector.cpp punto.cpp)
-target_include_directories(punto PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(vector PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(poligono PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(gift_wrapping_strategy PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(punto PUBLIC ${PROJECT_INCLUDE_DIR})
+
+add_library(vector STATIC vector.cpp)
+target_include_directories(vector PUBLIC ${PROJECT_INCLUDE_DIR})
+target_link_libraries(vector PUBLIC punto)
+
+add_library(poligono STATIC poligono.cpp)
+target_include_directories(poligono PUBLIC ${PROJECT_INCLUDE_DIR})
+target_link_libraries(poligono PUBLIC vector)
+
+add_library(gift_wrapping_strategy STATIC gift_wrapping_strategy.cpp)
+target_include_directories(gift_wrapping_strategy PUBLIC ${PROJECT_INCLUDE_DIR})
+target_link_libraries(gift_wrapping_strategy PUBLIC poligono)
 
 add_executable(Tarea2 main.cpp)
-target_link_libraries(Tarea2 punto)
-target_link_libraries(Tarea2 vector)
-target_link_libraries(Tarea2 poligono)
+target_link_libraries(Tarea2 PRIVATE poligono)
+
+add_subdirectory(generators)
 
 add_executable(GiftWrap gift_wrap_test.cpp)
-target_link_libraries(GiftWrap punto)
-target_link_libraries(GiftWrap vector)
-target_link_libraries(GiftWrap poligono)
-target_link_libraries(GiftWrap gift_wrapping_strategy)
+target_link_libraries(GiftWrap PRIVATE gift_wrapping_strategy at_least_three_colinear_points_strategy non_colinear_points_strategy completely_random_points_strategy)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(punto PRIVATE --coverage)
