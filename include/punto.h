@@ -14,7 +14,19 @@ class Punto
         T x;
         T y;
         T z;
-        
+    public:
+        Punto(T x, T y);
+        Punto(T x, T y, T z);
+        Punto(const Punto<T>& p);
+        const T getX() const;
+        const T getY() const;
+        const T getZ() const;
+        double distancia(Punto<T> &p);
+        bool operator==(const Punto<T> &other) const; // El último const es necesario para que gtest funcione
+        Punto<T> operator-(const Punto<T> &other) const;
+        bool operator<(const Punto<T>& other) const;  // Compara por x luego por y
+        template <class U>
+        friend std::ostream& operator<<(std::ostream& os, const Punto<U>& p);
         // https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
         static bool equal_within_ulps(T x, T y) 
         {
@@ -42,17 +54,5 @@ class Punto
                 return std::fabs(x - y) <= PRECISION * std::ldexp(std::numeric_limits<T>::epsilon(), exp);
             }
         };
-    public:
-        Punto(T x, T y);
-        Punto(T x, T y, T z);
-        Punto(const Punto<T>& p);
-        const T getX() const;
-        const T getY() const;
-        const T getZ() const;
-        double distancia(Punto<T> &p);
-        bool operator==(const Punto<T> &other) const; // El último const es necesario para que gtest funcione
-        Punto<T> operator-(const Punto<T> &other) const;
-        template <class U>
-        friend std::ostream& operator<<(std::ostream& os, const Punto<U>& p);
 };
 #endif

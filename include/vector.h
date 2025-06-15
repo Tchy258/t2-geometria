@@ -14,6 +14,7 @@ class Vector
         Vector(const Vector<T>& v);
         const Punto<T>& getCoords() const;
         double magnitud();
+        T magnitud2();
         T productoPunto(Vector<T>& other);
         Vector<T> productoCruz(Vector<T>& other);
         Vector<T> operator+(const Vector<T>& other);
