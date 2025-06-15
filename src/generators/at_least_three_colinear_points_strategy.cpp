@@ -3,18 +3,30 @@
 
 template<typename T>
 std::vector<Punto<T>> AtLeastThreeColinearPointsStrategy<T>::generate(unsigned int amount) {
-    std::vector<Punto<T>> points;
+    
+    // Pick two random points within bounds
+    T x1 = this->getRandom(), y1 = this->getRandom();
+    T x2 = this->getRandom(), y2 = this->getRandom();
+    while (x1 == x2) x2 = this->getRandom(); // Avoid division by zero
+    
+    // Calculate slope and intercept
+    T m = (y2 - y1) / (x2 - x1);
+    T b = y1 - m * x1;
 
-    // Generate 3 colinear points on line y = mx + b
-    T m = this->distribution(this->rng), b = this->distribution(this->rng);
-    for (int i = 0; i < 3; ++i) {
-        T x = this->distribution(rng);
-        points.emplace_back(x, m * x + b);
+    std::vector<Punto<T>> points = {Punto<T>(x1,y1), Punto<T>(x2,y2)};
+    while (points.size() < 3) {        
+        T x = this->getRandom();
+        T y = m * x + b;
+        if (y < this->dist.min() || y > this->dist.max()) continue;
+        Punto<T> p(x, y);
+        if (std::find(points.begin(), points.end(), p) == points.end()) {
+            points.push_back(p);
+        }
     }
 
     while (points.size() < amount) {
-        T x = this->distribution(this->rng);
-        T y = this->distribution(this->rng);
+        T x = this->getRandom();
+        T y = this->getRandom();
         points.emplace_back(x, y);
     }
 
