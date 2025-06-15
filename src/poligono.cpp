@@ -54,6 +54,35 @@ void Poligono<T>::convertirACCW()
     }
 }
 
+template<typename T>
+bool Poligono<T>::operator==(const Poligono<T>& other) const {
+    const auto& a = this->getPuntos();
+    const auto& b = other.getPuntos();
+
+    if (a.size() != b.size()) return false;
+    if (a.empty()) return true;
+
+    const size_t n = a.size();
+
+    // Try each rotation of b that starts with a point equal to a[0]
+    for (size_t offset = 0; offset < n; ++offset) {
+        if (!(a[0] == b[offset])) continue;
+
+        bool match = true;
+        for (size_t i = 0; i < n; ++i) {
+            if (!(a[i] == b[(i + offset) % n])) {
+                match = false;
+                break;
+            }
+        }
+
+        if (match) return true;
+    }
+
+    return false;
+}
+
+
 template <class U>
 std::ostream &operator<<(std::ostream& os, const Poligono<U>& poligono)
 {

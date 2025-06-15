@@ -14,6 +14,8 @@ class Poligono
         int cantidadDePuntos();
         bool orientacionCCW();
         void convertirACCW(); // Este método asume que el poligono está en CW
+        bool operator==(const Poligono<T>& other) const; // Hace una comparación cíclica, asume que ambos tienen la misma orientación
+        const std::vector<Punto<T>> getPuntos() const { return puntos; }
         T area2();
         double area();
         Punto<T>& operator[](int i);
