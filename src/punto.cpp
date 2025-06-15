@@ -55,6 +55,11 @@ bool Punto<T>::operator==(const Punto<T> &other) const
     return Punto<T>::equal_within_ulps(getX(),other.getX()) && Punto<T>::equal_within_ulps(getY(),other.getY()) && Punto<T>::equal_within_ulps(getZ(),other.getZ());
 }
 
+template <class T>
+bool Punto<T>::operator<(const Punto<T> &other) const {
+    return (getX() < other.getX()) || (equal_within_ulps(getX(),other.getX()) && getY() < other.getY());
+}
+
 template <class U>
 std::ostream &operator<<(std::ostream &os, const Punto<U>& p) 
 {
