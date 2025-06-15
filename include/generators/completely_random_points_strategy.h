@@ -5,17 +5,7 @@
 template <typename T>
 class CompletelyRandomPointsStrategy : public PointGenerationStrategy<T> {
 public:
-    std::vector<Punto<T>> generate(unsigned int amount) override {
-        std::vector<Punto<T>> points;
-
-        while (points.size() < amount) {
-            T x = this->distribution(rng);
-            T y = this->distribution(rng);
-            points.emplace_back(x, y);
-        }
-
-        return points;
-    }
+    std::vector<Punto<T>> generate(unsigned int amount) override;
 };
 
 #endif

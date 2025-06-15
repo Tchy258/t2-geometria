@@ -5,8 +5,8 @@ std::vector<Punto<T>> CompletelyRandomPointsStrategy<T>::generate(unsigned int a
         std::vector<Punto<T>> points;
 
         while (points.size() < amount) {
-            T x = this->distribution(rng);
-            T y = this->distribution(rng);
+            T x = this->getRandom();
+            T y = this->getRandom();
             points.emplace_back(x, y);
         }
 
