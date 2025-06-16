@@ -9,3 +9,7 @@ target_include_directories(non_colinear_points_strategy PUBLIC ${PROJECT_INCLUDE
 add_library(completely_random_points_strategy completely_random_points_strategy.cpp)
 target_include_directories(completely_random_points_strategy PUBLIC ${PROJECT_INCLUDE_DIR}/generators)
 target_include_directories(completely_random_points_strategy PUBLIC ${PROJECT_INCLUDE_DIR})
+
+add_library(hull_percentage_strategy hull_percentage_strategy.cpp)
+target_include_directories(hull_percentage_strategy PUBLIC ${PROJECT_INCLUDE_DIR}/generators)
+target_include_directories(hull_percentage_strategy PUBLIC ${PROJECT_INCLUDE_DIR})

@@ -20,8 +20,13 @@ target_link_libraries(Tarea2 PRIVATE poligono)
 
 add_subdirectory(generators)
 
+add_library(hull_tester STATIC hull_tester.cpp)
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR})
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR}/generators)
+target_link_libraries(hull_tester PUBLIC poligono at_least_three_colinear_points_strategy non_colinear_points_strategy completely_random_points_strategy hull_percentage_strategy)
+
 add_executable(GiftWrap gift_wrap_test.cpp)
-target_link_libraries(GiftWrap PRIVATE gift_wrapping_strategy at_least_three_colinear_points_strategy non_colinear_points_strategy completely_random_points_strategy)
+target_link_libraries(GiftWrap PRIVATE gift_wrapping_strategy hull_tester)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(punto PRIVATE --coverage)

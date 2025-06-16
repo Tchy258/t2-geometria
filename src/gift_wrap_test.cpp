@@ -1,5 +1,7 @@
 #include "gift_wrapping_strategy.h"
 #include <at_least_three_colinear_points_strategy.h>
+#include <hull_tester.h>
+#include <hull_percentage_strategy.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -42,24 +44,21 @@ int main(int argc, char** argv) {
 */
 ///*
 int main(int argc, char** argv) {
-    PointGenerationStrategy<long long>* strategy = new AtLeastThreeColinearPointsStrategy<long long>();
-    ConvexHullStrategy<long long>* hullStrategy = new GiftWrappingStrategy<long long>();
-    strategy->setSeed(123);
-    strategy->setBounds(-1000, 1000);
-    int values[] = {10000, 100000, 1000000};
-    for (int i = 0; i < 3; ++i) {
-        for (int k = 0; k < 3; ++k) {
-            std::stringstream name;
-            name << "out_" << values[i] << "_" << k << ".txt" ;
-            std::ofstream file(name.str());
-            std::vector<Punto<long long>> randomPoints = strategy->generate(values[i]);
-            file << "Points: " << std::endl;
-            file << Poligono<long long>(randomPoints) << std::endl;
-            Poligono<long long> capsula = hullStrategy->apply(randomPoints);
-            file << std::endl << "Hull: " << std::endl;
-            file << capsula << std::endl << std::endl;
-            file.close();
-        }
+    if (argc < 2) {
+        std::cout << "Usage ./Test.exe <times per size> [<filename>]" << std::endl;
+        return 1;
     }
+    auto strategy = std::unique_ptr<PointGenerationStrategy<long long>>(new HullPercentageStrategy<long long>(0.6));
+    auto hullStrategy = std::unique_ptr<GiftWrappingStrategy<long long>>(new GiftWrappingStrategy<long long>());
+    auto hullStrategy2 = std::unique_ptr<GiftWrappingStrategy<long long>>(new GiftWrappingStrategy<long long>());
+    HullTester<long long> tester = HullTester<long long>(std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
+    tester.setSeed(123);
+    tester.setBounds(-1000, 1000);
+    std::vector<size_t> sizes({10000, 100000, 1000000});
+    std::string filename = std::string("");
+    if (argc > 2) {
+        filename = std::string(argv[2]);
+    }
+    tester.timeAndTest(atoi(argv[1]), sizes, filename);
 }
 //*/
