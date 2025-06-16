@@ -7,6 +7,9 @@ class GiftWrappingStrategy : public ConvexHullStrategy<T> {
     public:
         GiftWrappingStrategy<T>() = default;
         Poligono<T> apply(std::vector<Punto<T>> &cloud) override;
+        std::string name() override {
+            return std::string("GiftWrapping");
+        };
     private:
         inline bool compareByAngle(Vector<T>& refDir, Vector<T>& lastCandidate, Vector<T>& candidate);
 };

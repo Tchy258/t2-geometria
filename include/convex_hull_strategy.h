@@ -9,6 +9,7 @@ class ConvexHullStrategy {
     public:
         virtual ~ConvexHullStrategy() = default;
         virtual Poligono<T> apply(std::vector<Punto<T>> &cloud) = 0;
+        virtual std::string name() = 0;
 };
 
 #endif
