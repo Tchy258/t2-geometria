@@ -49,12 +49,12 @@ void HullTester<T>::timeAndTest(unsigned int amountOfTimesPerSize, std::vector<s
             auto start1 = std::chrono::high_resolution_clock::now();
             Poligono<T> poligono = builder->apply(points);
             auto end1 = std::chrono::high_resolution_clock::now();
-            auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
+            std::chrono::duration<double, std::milli> duration1 = end1 - start1;
             row << (i == 0 ? "" : ",") << duration1.count();
             auto start2 = std::chrono::high_resolution_clock::now();
             Poligono<T> poligono2 = builder2->apply(points);
             auto end2 = std::chrono::high_resolution_clock::now();
-            auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
+            std::chrono::duration<double, std::milli> duration2 = end2 - start2;
             row << "," << duration2.count();
         }
         row << std::endl;
