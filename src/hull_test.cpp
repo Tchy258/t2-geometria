@@ -5,47 +5,10 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-/*
-int main(int argc, char** argv) {
-    std::vector<Punto<int>> puntos({
-        {-1,0}, {4,0}, {3,1},
-        {1,2}, {2,3}, {-1,3}
-    });
 
-    ConvexHullStrategy<int>* strategy = new GiftWrappingStrategy<int>();
-    Poligono<int> capsula = strategy->apply(puntos);
-    std::vector<Punto<int>> capsulaRealPuntos = {
-        {-1,0}, {4,0}, {2,3}, {-1,3}
-    };
-    Poligono<int> capsulaReal(capsulaRealPuntos);
-    if (!(capsula == capsulaReal)) {
-        std::cerr << capsula << std::endl;
-        std::cerr << capsulaReal << std::endl;
-        throw std::logic_error("Capsulas distintas");
-    }
-
-    puntos = std::vector<Punto<int>>({
-        {0,0}, {4,0}, {4,3}, {0,3}, {2,1}, {3,2}, {1,2}
-    });
-
-    capsula = strategy->apply(puntos);
-
-    capsulaRealPuntos = std::vector<Punto<int>>({
-        {0,0}, {4,0}, {4,3}, {0,3}
-    });
-
-    capsulaReal = Poligono<int>(capsulaRealPuntos);
-    if (!(capsula == capsulaReal)) {
-        std::cerr << capsula << std::endl;
-        std::cerr << capsulaReal << std::endl;
-        throw std::logic_error("Capsulas distintas");
-    }
-}
-*/
-///*
 int main(int argc, char** argv) {
     if (argc < 3) {
-        std::cout << "Usage ./Test.exe <times per size> <percentage on hull from 0 to 100> [<colinear point amount?] [seed] [<filename>]" << std::endl;
+        std::cout << "Usage ./HullTest.exe <times per size> <percentage on hull from 0 to 100> [<colinear point amount?] [seed] [<filename>]" << std::endl;
         return 1;
     }
     float percentageOnHull = static_cast<float>(atoi(argv[2])) / 100.0f;
@@ -70,4 +33,3 @@ int main(int argc, char** argv) {
     }
     tester.timeAndTest(atoi(argv[1]), sizes, filename);
 }
-//*/
