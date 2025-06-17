@@ -35,4 +35,11 @@ class HullTester {
         HullTester& operator=(HullTester&&) = default;
 };
 
+template <typename T>
+void executeTest(unsigned int timesPerSize, std::string filename, T lowerBound, T upperBound, int seed, std::unique_ptr<PointGenerationStrategy<T>> strategy, std::unique_ptr<ConvexHullStrategy<T>> hullStrategy, std::unique_ptr<ConvexHullStrategy<T>> hullStrategy2) {
+    HullTester<T> tester = HullTester<T>(std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
+    tester.setSeed(seed).setBounds(lowerBound, upperBound);
+    std::vector<size_t> sizes({10000, 100000, 1000000});
+    tester.timeAndTest(timesPerSize, sizes, filename);
+}
 #endif
