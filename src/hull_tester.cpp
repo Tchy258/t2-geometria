@@ -34,7 +34,7 @@ void HullTester<T>::timeAndTest(unsigned int amountOfTimesPerSize, std::vector<s
     }
     std::stringstream head;
     head << sizes[0] << builder->name() << ",";
-    head << sizes[0] << builder2->name() << ",";
+    head << sizes[0] << builder2->name();
     for (int i = 1; i < sizes.size(); ++i) {
         head << "," << sizes[i] << builder->name();
         head << "," << sizes[i] << builder2->name();
