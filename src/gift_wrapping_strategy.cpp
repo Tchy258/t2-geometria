@@ -1,23 +1,5 @@
 #include "gift_wrapping_strategy.h"
 
-template<typename T>
-inline T safe_infinity_cast() {
-    if (std::is_integral<T>::value) {
-        return std::numeric_limits<T>::max();
-    } else {
-        return std::numeric_limits<T>::infinity();
-    }
-}
-
-template<typename T>
-inline T safe_negative_infinity_cast() {
-    if (std::is_integral<T>::value) {
-        return std::numeric_limits<T>::min();
-    } else {
-        return -std::numeric_limits<T>::infinity();
-    }
-}
-
 template<class T>
 inline bool GiftWrappingStrategy<T>::compareByAngle(Vector<T>& lastCandidate, Vector<T>& candidate) {
     T crossProduct = lastCandidate.productoCruz(candidate).getCoords().getZ();
