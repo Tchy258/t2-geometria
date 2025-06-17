@@ -19,18 +19,12 @@ inline T safe_negative_infinity_cast() {
 }
 
 template<class T>
-inline bool GiftWrappingStrategy<T>::compareByAngle(Vector<T>&refDir, Vector<T>& lastCandidate, Vector<T>& candidate) {
-    T lastBestCross = refDir.productoCruz(lastCandidate).getCoords().getZ();
-    T lastBestDot = refDir.productoPunto(lastCandidate);
-    T candidateCross = refDir.productoCruz(candidate).getCoords().getZ();
-    T candidateDot = refDir.productoPunto(candidate);
-     // If angles are on different sides of the refDir
-    if ((lastBestCross < 0 && candidateCross >= 0)) return true;
-    if ((lastBestCross >= 0 && candidateCross < 0)) return false;
-
-    // If same direction (possibly collinear), compare using tan = cross / dot
-    T cmp = lastBestCross * candidateDot - candidateCross * lastBestDot;
-    if (!Punto<T>::equal_within_ulps(cmp,0)) return cmp > 0;
+inline bool GiftWrappingStrategy<T>::compareByAngle(Vector<T>& lastCandidate, Vector<T>& candidate) {
+    T crossProduct = lastCandidate.productoCruz(candidate).getCoords().getZ();
+    
+    if (!Punto<T>::equal_within_ulps(crossProduct,0)) {
+        return crossProduct > 0;
+    }
 
     // Collinear: pick the point farther from p
     T distA = lastCandidate.magnitud2();
@@ -57,7 +51,6 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
     
     unsigned long long firstIndex = pointOnHullIndex;
     Vector<T> lastCandidate(cloud[(pointOnHullIndex + 1) % n] - cloud[pointOnHullIndex]);
-    Vector<T> previousEdge(Punto<T>(1,0));
     do {
         convexHull.push_back(cloud[pointOnHullIndex]);
         unsigned long long k;
@@ -71,12 +64,11 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         for (unsigned long long j = 0; j < n; ++j) {
             if (j == pointOnHullIndex) continue;
             Vector<T> newEdge = Vector<T>(cloud[j] - cloud[pointOnHullIndex]);
-            if (compareByAngle(previousEdge, lastCandidate, newEdge)) {
+            if (compareByAngle(lastCandidate, newEdge)) {
                 lastCandidate = newEdge;
                 k = j;
             }
         }
-        previousEdge = lastCandidate;
         pointOnHullIndex = k;
     } while ( pointOnHullIndex != firstIndex);
 

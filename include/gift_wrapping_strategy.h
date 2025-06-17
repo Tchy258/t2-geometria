@@ -11,7 +11,7 @@ class GiftWrappingStrategy : public ConvexHullStrategy<T> {
             return std::string("GiftWrapping");
         };
     private:
-        inline bool compareByAngle(Vector<T>& refDir, Vector<T>& lastCandidate, Vector<T>& candidate);
+        inline bool compareByAngle(Vector<T>& lastCandidate, Vector<T>& candidate);
 };
 
 #endif
