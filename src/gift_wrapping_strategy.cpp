@@ -69,7 +69,7 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         if (pointOnHullIndex != firstIndex) lastCandidate = Vector<T>(cloud[firstIndex] - cloud[pointOnHullIndex]);
 
         for (unsigned long long j = 0; j < n; ++j) {
-            if (j == pointOnHullIndex || pointsUsed[j]) continue;
+            if (j == pointOnHullIndex) continue;
             Vector<T> newEdge = Vector<T>(cloud[j] - cloud[pointOnHullIndex]);
             if (compareByAngle(previousEdge, lastCandidate, newEdge)) {
                 lastCandidate = newEdge;
