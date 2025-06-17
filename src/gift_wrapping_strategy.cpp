@@ -57,8 +57,6 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
     
     unsigned long long firstIndex = pointOnHullIndex;
     Vector<T> lastCandidate(cloud[(pointOnHullIndex + 1) % n] - cloud[pointOnHullIndex]);
-    std::vector<bool> pointsUsed(n,false);
-    pointsUsed[pointOnHullIndex] = true;
     Vector<T> previousEdge(Punto<T>(1,0));
     do {
         convexHull.push_back(cloud[pointOnHullIndex]);
@@ -80,7 +78,6 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         }
         previousEdge = lastCandidate;
         pointOnHullIndex = k;
-        pointsUsed[k] = true;
     } while ( pointOnHullIndex != firstIndex);
 
     Poligono<T> capsula(convexHull);
