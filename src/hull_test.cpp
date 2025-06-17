@@ -24,8 +24,7 @@ int main(int argc, char** argv) {
     auto hullStrategy = std::unique_ptr<GiftWrappingStrategy<long long>>(new GiftWrappingStrategy<long long>());
     auto hullStrategy2 = std::unique_ptr<GiftWrappingStrategy<long long>>(new GiftWrappingStrategy<long long>());
     HullTester<long long> tester = HullTester<long long>(std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
-    tester.setSeed(123);
-    tester.setBounds(-1000, 1000);
+    tester.setSeed(123).setBounds(-1000, 1000);
     std::vector<size_t> sizes({10000, 100000, 1000000});
     std::string filename = std::string("");
     if (argc > 5) {
