@@ -5,7 +5,7 @@
 #include<cmath>
 #include<utility>
 
-#define PRECISION 5
+#define PRECISION 1000
 
 template <class T>
 class Punto 
