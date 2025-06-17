@@ -23,7 +23,7 @@ inline bool GiftWrappingStrategy<T>::compareByAngle(Vector<T>& lastCandidate, Ve
     T crossProduct = lastCandidate.productoCruz(candidate).getCoords().getZ();
     
     if (!Punto<T>::equal_within_ulps(crossProduct,0)) {
-        return crossProduct > 0;
+        return crossProduct < 0; // > 0 for CW
     }
 
     // Collinear: pick the point farther from p
@@ -50,26 +50,23 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
     }
     
     unsigned long long firstIndex = pointOnHullIndex;
-    Vector<T> lastCandidate(cloud[(pointOnHullIndex + 1) % n] - cloud[pointOnHullIndex]);
+    unsigned long long next = (pointOnHullIndex + 1) % n;
+    Vector<T> lastCandidate(cloud[next] - cloud[pointOnHullIndex]);
     do {
         convexHull.push_back(cloud[pointOnHullIndex]);
-        unsigned long long k;
-        if (convexHull.size() == 1) {
-            k = (pointOnHullIndex + 1) % n;
-        } else {
-            k = firstIndex;
-        }
-        if (pointOnHullIndex != firstIndex) lastCandidate = Vector<T>(cloud[firstIndex] - cloud[pointOnHullIndex]);
-
+        
         for (unsigned long long j = 0; j < n; ++j) {
             if (j == pointOnHullIndex) continue;
             Vector<T> newEdge = Vector<T>(cloud[j] - cloud[pointOnHullIndex]);
             if (compareByAngle(lastCandidate, newEdge)) {
                 lastCandidate = newEdge;
-                k = j;
+                next = j;
             }
         }
-        pointOnHullIndex = k;
+        pointOnHullIndex = next;
+        
+        next = firstIndex;
+        lastCandidate = Vector<T>(cloud[firstIndex] - cloud[pointOnHullIndex]);
     } while ( pointOnHullIndex != firstIndex);
 
     Poligono<T> capsula(convexHull);
