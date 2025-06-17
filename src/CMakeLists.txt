@@ -28,6 +28,9 @@ target_link_libraries(hull_tester PUBLIC poligono at_least_three_colinear_points
 add_executable(IntegerHullTest integer_hull_test.cpp)
 target_link_libraries(IntegerHullTest PRIVATE gift_wrapping_strategy hull_tester)
 
+add_executable(LLHullTest ll_hull_test.cpp)
+target_link_libraries(LLHullTest PRIVATE gift_wrapping_strategy hull_tester)
+
 add_executable(DoubleHullTest double_hull_test.cpp)
 target_link_libraries(DoubleHullTest PRIVATE gift_wrapping_strategy hull_tester)
 
@@ -46,6 +49,8 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_link_options(Tarea2 PRIVATE --coverage)
     target_compile_options(IntegerHullTest PRIVATE --coverage)
     target_link_options(IntegerHullTest PRIVATE --coverage)
+    target_compile_options(LLHullTest PRIVATE --coverage)
+    target_link_options(LLHullTest PRIVATE --coverage)
     target_compile_options(DoubleHullTest PRIVATE --coverage)
     target_link_options(DoubleHullTest PRIVATE --coverage)
 endif()
