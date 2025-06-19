@@ -1,0 +1,11 @@
+add_executable(IntegerHullTest integer_hull_test.cpp)
+target_link_libraries(IntegerHullTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(LLHullTest ll_hull_test.cpp)
+target_link_libraries(LLHullTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(DoubleHullTest double_hull_test.cpp)
+target_link_libraries(DoubleHullTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(FloatHullTest float_hull_test.cpp)
+target_link_libraries(FloatHullTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)

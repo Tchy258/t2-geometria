@@ -1,0 +1,14 @@
+add_executable(IntegerRandomTest integer_random_test.cpp)
+target_link_libraries(IntegerRandomTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(LLRandomTest ll_random_test.cpp)
+target_link_libraries(LLRandomTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(DoubleRandomTest double_random_test.cpp)
+target_link_libraries(DoubleRandomTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_executable(FloatRandomTest float_random_test.cpp)
+target_link_libraries(FloatRandomTest PRIVATE divide_and_conquer_strategy gift_wrapping_strategy hull_tester)
+
+add_subdirectory(at_least_three_colinear)
+add_subdirectory(non_colinear)

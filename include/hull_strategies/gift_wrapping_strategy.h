@@ -1,7 +1,7 @@
 #ifndef GIFT_WRAPPING_STRATEGY_H
 #define GIFT_WRAPPING_STRATEGY_H
 #include "convex_hull_strategy.h"
-#include <bitset>
+
 template <typename T>
 class GiftWrappingStrategy : public ConvexHullStrategy<T> {
     public:
@@ -10,8 +10,6 @@ class GiftWrappingStrategy : public ConvexHullStrategy<T> {
         std::string name() override {
             return std::string("GiftWrapping");
         };
-    private:
-        inline bool compareByAngle(Vector<T>& lastCandidate, Vector<T>& candidate);
 };
 
 #endif

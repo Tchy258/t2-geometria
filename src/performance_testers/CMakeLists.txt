@@ -1,0 +1,9 @@
+add_library(hull_tester STATIC hull_tester.cpp)
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR})
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR}/generators)
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR}/performance_testers)
+target_include_directories(hull_tester PUBLIC ${PROJECT_INCLUDE_DIR}/hull_strategies)
+target_link_libraries(hull_tester PUBLIC poligono at_least_three_colinear_points_strategy non_colinear_points_strategy completely_random_points_strategy hull_percentage_strategy)
+
+add_subdirectory(random_points)
+add_subdirectory(outer_circle)

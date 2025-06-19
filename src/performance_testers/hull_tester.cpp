@@ -1,4 +1,5 @@
 #include <hull_tester.h>
+#include <iostream>
 
 template<typename T>
 HullTester<T>::HullTester(std::unique_ptr<PointGenerationStrategy<T>>&& generator,
@@ -56,6 +57,15 @@ void HullTester<T>::timeAndTest(unsigned int amountOfTimesPerSize, std::vector<s
             auto end2 = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double, std::milli> duration2 = end2 - start2;
             row << "," << duration2.count();
+            if (!(poligono == poligono2)) {
+                std::cerr << "Puntos: " << std::endl;
+                std::cerr << Poligono<T>(points) << std::endl;
+                std::cerr << std::endl << "Capusla1:" << std::endl;
+                std::cerr << poligono << std::endl;
+                std::cerr << std::endl << "Capsula2:" << std::endl;
+                std::cerr << poligono2 << std::endl;
+                throw std::logic_error("Capsulas no son iguales");
+            }
         }
         row << std::endl;
         file << row.str();

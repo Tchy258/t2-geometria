@@ -1,5 +1,5 @@
-#include "gift_wrapping_strategy.h"
-#include <at_least_three_colinear_points_strategy.h>
+#include <divide_and_conquer_strategy.h>
+#include <gift_wrapping_strategy.h>
 #include <hull_tester.h>
 #include <hull_percentage_strategy.h>
 #include <iostream>
@@ -26,6 +26,6 @@ int main(int argc, char** argv) {
     }
     auto strategy = std::unique_ptr<PointGenerationStrategy<double>>(new HullPercentageStrategy<double>(percentageOnHull, colinear));
     auto hullStrategy = std::unique_ptr<GiftWrappingStrategy<double>>(new GiftWrappingStrategy<double>());
-    auto hullStrategy2 = std::unique_ptr<GiftWrappingStrategy<double>>(new GiftWrappingStrategy<double>());
+    auto hullStrategy2 = std::unique_ptr<DivideAndConquerStrategy<double>>(new DivideAndConquerStrategy<double>());
     executeTest<double>(atoi(argv[1]), filename, -159200.0, 159200.0, seed, std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
 }

@@ -1,0 +1,9 @@
+add_library(gift_wrapping_strategy STATIC gift_wrapping_strategy.cpp)
+target_include_directories(gift_wrapping_strategy PUBLIC ${PROJECT_INCLUDE_DIR})
+target_include_directories(gift_wrapping_strategy PUBLIC ${PROJECT_INCLUDE_DIR}/hull_strategies)
+target_link_libraries(gift_wrapping_strategy PUBLIC poligono)
+
+add_library(divide_and_conquer_strategy STATIC divide_and_conquer_strategy.cpp)
+target_include_directories(divide_and_conquer_strategy PUBLIC ${PROJECT_INCLUDE_DIR})
+target_include_directories(divide_and_conquer_strategy PUBLIC ${PROJECT_INCLUDE_DIR}/hull_strategies)
+target_link_libraries(divide_and_conquer_strategy PUBLIC poligono)
