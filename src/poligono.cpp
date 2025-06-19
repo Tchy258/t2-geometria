@@ -24,9 +24,10 @@ template <typename T>
 T Poligono<T>::area2()
 {
     T total = (T) 0;
-    for (int i = 0; i < puntos.size(); i++) {
-        Vector<T> vec1(puntos[i]);
-        Vector<T> vec2(puntos[(i + 1) % puntos.size()]);
+    Punto<T> origen = puntos[0];
+    for (int i = 1; i + 1< puntos.size(); ++i) {
+        Vector<T> vec1(puntos[i] - origen);
+        Vector<T> vec2(puntos[i + 1] - origen);
         total += vec1.productoCruz(vec2).getCoords().getZ();
     }
     return total;
