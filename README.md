@@ -2,7 +2,7 @@
 
 Este código corresponde a la Tarea 2 y 3 - Cerradura Convexa de Nicolás Escobar Zarzar alumno del curso CC5502 Geometría Computacional del semestre otoño 2025.
 Esta tarea consiste en programar dos algoritmos de cerradura convexa haciendo uso de las clases hechas en la Tarea 1, los algoritmos a implementar son GiftWrapping y Divide and Conquer. Esto se hace mediante la implementación del patrón de diseño _strategy_ usando la clase `ConvexHullStrategy` como base. También se pide diseñar un experimento para determinar para que distribuciones de punto es mejor usar uno u otro, junto con un método que genere una lista aleatoria de n puntos y otro que genere un conjunto de puntos en que un cierto porcentaje de estos forme parte de la cerradura convexa y el resto se distribuya aleatoriamente en el interior, también usando el patrón strategy con la clase `PointGenerationStrategy`.
-Fue desarrollada usando Visual Studio Code en Windows, pero a continuación se dan las instrucciones para su compilación y ejecución en cualquier entorno de escritorio (Windows, Linux, MacOS).
+Fue desarrollada usando Visual Studio Code en Windows usndo [MSYS2](https://www.msys2.org/), pero a continuación se dan las instrucciones para su compilación y ejecución en cualquier entorno de escritorio (Windows, Linux, MacOS).
 ## Herramientas necesarias
 
 ### g++
@@ -49,7 +49,7 @@ En macOS se puede obtener mediante [Homebrew](https://brew.sh/)
 brew install make gcc g++
 ```
 ### CMake
-Para compilar esta librería se necesita CMake 3.31, este se puede descargar desde [la página de CMake](https://cmake.org/download/) o mediante el gestor de paquetes (no se recomienda, pues no se puede asegurar la versión correcta de CMake).\
+Para compilar este código se necesita CMake 3.31, este se puede descargar desde [la página de CMake](https://cmake.org/download/) o mediante el gestor de paquetes (no se recomienda, pues no se puede asegurar la versión correcta de CMake).\
 Si se está en Windows podría ser necesario agregar la carpeta `bin` de la instalación de CMake a la variable de entorno `$PATH` de forma manual.
 
 ## Configuración
@@ -93,8 +93,10 @@ Habiendo hecho la configuración basta con ejecutar los siguientes comandos en u
 $ cmake -S . -B build/release
 $ cmake --build build/release
 ```
-Esto generará las librerías estáticas en `build/src` con los nombres `libpunto`, `libvector` y `libpoligono` con la extensión que corresponda y también el archivo
-`Tarea1.exe`. Adicionalmente este comando compilará los tests.
+Esto generará las librerías estáticas en `build/release/src` con los nombres `libpunto`, `libvector` y `libpoligono` con la extensión que corresponda y también el archivo
+`Tarea2.exe`.También compilará los tests de la tarea anterior.
+
+Adicionalmente se crearan multiples ejecutables en `build/release/src/performance_testers` y sus subcarpetas, los cuales ejecutan los algortimos para formar la cerradura convexa con distintos tipos de datos (`int`, `long long`, `float` y `double`)
 
 Notar que si se desea hacer debugging o revisar el porcentaje de coverage es necesario configurar la flag `CMAKE_BUILD_TYPE` con el valor `Debug` para compilar la librería con los simbolos correspondientes de la siguiente manera:
 ```bash
@@ -128,3 +130,25 @@ En la raíz del proyecto lo que generará un archivo `coverage.html` en la carpe
 
 Por conveniencia se dejan los scripts `coverage.sh` y `coverage.ps1` que al ejecutarse, según el sistema operativo que corresponda, correran los comandos necesarios de `cmake`, `ctest` y `gcovr`. \
 Notar que este script asume que las variables de entorno ya están configuradas correctamente.
+
+## Ejecución de pruebas
+
+Para probar los algoritmos de cerradura convexa, se dispone de los ejecutables en las subcarpetas de `build/src/performance_testers` y sus subcarpetas, cada uno de estos corresponde a distintos tipos de datos (`int`, `float`, `double`, `long long`) y a distintas formas de generar un conjunto de puntos para probar los algoritmos:
+- `outer_circle`: Estos ejecutables generan un conjunto de puntos delimitados por un círculo, esto se hace para controlar la cantidad de puntos que formarán parte de la cerradura convexa. Uno de estos ejecutables se puede ejectuar de la siguiente manera
+```bash
+$ ./LLHullTest.exe <veces> <porcentaje en la cerradura> [<cantidad de puntos colineales>] [semilla] [path de salida]
+```
+Donde `veces` es la cantidad de veces que los algoritmos se deben correr sobre un conjunto (distinto) de tamaño fijo, los tamaños están fijos en 10000, 100000 y 1000000 como solicita el enunciado, `porcentaje en la cerradura` es un valor entre 0 y 100 que determina el porcentaje de puntos que forman parte del círculo que será la cerradura convexa (o un subconjunto de ella en caso de tener puntos colineales), `cantidad de puntos colineales`, como dice su nombre, es la cantidad de puntos colineales deseada que formarán parte del círculo, por defecto se asume que no hay colineales, `semilla` es la semilla que utilizará el generador de números aleatorios para generar el conjunto de puntos, por defecto la semilla es 123, finalmente `path de salida` es una ruta (ya sea absoluta o relativa) a un archivo en el cual se escribirán los tiempos de ejecución en formato csv.
+
+- `random_points`: Estos ejecutables generan conjuntos de puntos totalmente aleatorios con la sola restricción de tener un valor mínimo y máximo según el tipo de dato. Estos se pueden ejecutar de la forma siguiente
+```bash
+$ ./LLRandomTest.exe <veces> [semilla] [path de salida]
+```
+Donde los parámetros `veces`, `semilla` y `path de salida` significan lo mismo que para `outer_circle`
+
+- `random_points/at_least_three_colinear`: Estos ejecutables son similares al anterior, pero aseguran de que habrá al menos 3 puntos colineales en el conjunto de puntos, ya sea como parte de la cerradura o no. Se ejecutan de la misma manera que `random_points`.
+
+- `random_points/non_colinear`: Lo opuesto del anterior, este asegura que no habrá ningún trio de puntos colineales en el conjunto de puntos. Se ejecutan de la misma manera que `random_points`.
+
+
+Para facilitar la ejecución de estas prueba se dispone de los scripts `run_benchmarks_windows.py` y `run_benchmarks_unix.py` que requieren Python3.11+ y se encargan de correr los algoritmos según la plataforma correspondiente asumiendo que el código ya fue compilado. Estos scripts correran por cada tipo de dato, 5 veces los algoritmos, con porcentajes en la cerradura (si corresponde) de 10%, 30%, 50%, 70% y 100%, con cantidad de puntos colineales (si correponde) de 0, 3 y 10 y con la semilla por defecto 123. Luego guardará los resultados en el directorio actual con el formato `<nombre_del_ejecutable>_<porcentaje_en_la_cerradura>_<colineales>.csv`
