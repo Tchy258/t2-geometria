@@ -75,20 +75,41 @@ template <typename T>
 std::vector<Punto<T>> DivideAndConquerStrategy<T>::joinHulls(std::vector<Punto<T>> &leftHull, std::vector<Punto<T>> &rightHull) {
     size_t n1 = leftHull.size(); 
     size_t n2 = rightHull.size();
-    size_t initialL = 0, initialR = 0;
+    size_t initialLTop = -1, initialRBottom = -1;
+    size_t initialRTop = -1, initialLBottom = -1;
     size_t indexL = 0, indexR = 0, nextL = 0, nextR = 0;
     for (int i = 0; i < n1; ++i) {
         if (leftHull[i].getX() > leftHull[indexL].getX()) {
             indexL = i;
+            initialLBottom = i;
+            initialLTop = i;
+        } else if (leftHull[i].getX() == leftHull[indexL].getX()) {
+            if (leftHull[i].getY() < leftHull[indexL].getY()) {
+                initialLBottom = i;
+                initialLTop = indexL;
+            } else {
+                initialLTop = i;
+                initialLBottom = indexL;
+            }
         }
     }
     for (int i = 0; i < n2; ++i) {
         if (rightHull[i].getX() < rightHull[indexR].getX()) {
             indexR = i;
+            initialRBottom = i;
+            initialRTop = i;
+        } else if (rightHull[i].getX() == rightHull[indexR].getX()) {
+            if (rightHull[i].getY() < rightHull[indexR].getY()) {
+                initialRBottom = i;
+                initialRTop = indexR;
+            } else {
+                initialRBottom = indexR;
+                initialRTop = i;
+            }
         }
     }
-    initialR = indexR;
-    initialL = indexL;
+    indexR = initialRTop;
+    indexL = initialLTop;
     nextL = indexL;
     bool tangentFound = false;
     // Upper Tangent
@@ -110,8 +131,8 @@ std::vector<Punto<T>> DivideAndConquerStrategy<T>::joinHulls(std::vector<Punto<T
     }
     size_t upperTangentL = indexL;
     size_t upperTangentR = indexR;
-    indexL = initialL;
-    indexR = initialR;
+    indexL = initialLBottom;
+    indexR = initialRBottom;
     tangentFound = false;
     // Lower tangent
     nextL = indexL;
