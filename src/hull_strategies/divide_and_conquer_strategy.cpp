@@ -75,8 +75,8 @@ template <typename T>
 std::vector<Punto<T>> DivideAndConquerStrategy<T>::joinHulls(std::vector<Punto<T>> &leftHull, std::vector<Punto<T>> &rightHull) {
     size_t n1 = leftHull.size(); 
     size_t n2 = rightHull.size();
-    size_t initialLTop = -1, initialRBottom = -1;
-    size_t initialRTop = -1, initialLBottom = -1;
+    size_t initialLTop = 0, initialRBottom = 0;
+    size_t initialRTop = 0, initialLBottom = 0;
     size_t indexL = 0, indexR = 0, nextL = 0, nextR = 0;
     for (int i = 0; i < n1; ++i) {
         if (leftHull[i].getX() > leftHull[indexL].getX()) {
