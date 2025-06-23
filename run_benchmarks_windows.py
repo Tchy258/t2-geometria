@@ -13,7 +13,7 @@ S_values = [123]
 # Paths
 MAIN = Path("./build/release/src/performance_testers").resolve()
 CURRENT_DIR = Path.cwd()
-MAX_PARALLEL = 6  # Max number of concurrent processes
+MAX_PARALLEL = 4  # Max number of concurrent processes
 
 def run_executable(exe_path, args):
     try:

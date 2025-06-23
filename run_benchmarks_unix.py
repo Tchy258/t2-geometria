@@ -13,7 +13,7 @@ S_values = [123]
 # Paths
 MAIN = Path("./build/release/src/performance_testers").resolve()
 CURRENT_DIR = Path.cwd()
-MAX_PARALLEL = 6
+MAX_PARALLEL = 4
 
 def is_executable_file(path: Path) -> bool:
     return path.is_file() and os.access(path, os.X_OK)
