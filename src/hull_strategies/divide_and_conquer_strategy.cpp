@@ -2,7 +2,7 @@
 #include <iostream>
 
 template <typename T>
-inline bool DivideAndConquerStrategy<T>::isMoreCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest) {
+inline bool DivideAndConquerStrategy<T>::isMoreCCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest) {
     Vector<T> old = Vector<T>(currentBest - reference);
     Vector<T> current = Vector<T>(newCandidate - reference);
     T crossProduct = old.productoCruz(current).getCoords().getZ();
@@ -14,9 +14,9 @@ inline bool DivideAndConquerStrategy<T>::isMoreCW(Punto<T> &reference, Punto<T>&
     T distA = old.magnitud2();
     T distB = current.magnitud2();
     if (keepFarthest) {
-        return distB >= distA;
+        return distB > distA;
     } else {
-        return distB < distA;
+        return distB <= distA;
     }
 }
 
@@ -94,19 +94,18 @@ std::vector<Punto<T>> DivideAndConquerStrategy<T>::joinHulls(std::vector<Punto<T
     // Upper Tangent
     while(!tangentFound) {
         tangentFound = true;
+        nextL = (indexL + 1) % n1;
+        while (this->isMoreCW(rightHull[indexR],leftHull[indexL], leftHull[nextL], true)) {
+            if (nextL == indexL) break;
+            indexL = nextL;
+            nextL = (indexL + 1) % n1;
+        }
         nextR = (indexR + n2 - 1) % n2;
-        while (this->isMoreCW(leftHull[indexL], rightHull[indexR], rightHull[nextR], true)) {
+        while (this->isMoreCCW(leftHull[indexL], rightHull[indexR], rightHull[nextR], true)) {
             if (nextR == indexR) break;
             tangentFound = false;
             indexR = nextR;
             nextR = (indexR + n2 - 1) % n2;
-        }
-        nextL = (indexL + 1) % n1;
-        while (this->isMoreCCW(rightHull[indexR],leftHull[indexL], leftHull[nextL], true)) {
-            if (nextL == indexL) break;
-            tangentFound = false;
-            indexL = nextL;
-            nextL = (indexL + 1) % n1;
         }
     }
     size_t upperTangentL = indexL;
@@ -119,14 +118,13 @@ std::vector<Punto<T>> DivideAndConquerStrategy<T>::joinHulls(std::vector<Punto<T
     while(!tangentFound) {
         tangentFound = true;
         nextR = (indexR + 1) % n2;
-        while (this->isMoreCCW(leftHull[indexL], rightHull[indexR], rightHull[nextR], true)) {
+        while (this->isMoreCW(leftHull[indexL], rightHull[indexR], rightHull[nextR], true)) {
             if (nextR == indexR) break;
-            tangentFound = false;
             indexR = nextR;
             nextR = (indexR + 1) % n2;
         }
         nextL = (indexL + n1 - 1) % n1;
-        while (this->isMoreCW(rightHull[indexR], leftHull[indexL], leftHull[nextL], true)) {
+        while (this->isMoreCCW(rightHull[indexR], leftHull[indexL], leftHull[nextL], true)) {
             if (nextL == indexL) break;
             tangentFound = false;
             indexL = nextL;

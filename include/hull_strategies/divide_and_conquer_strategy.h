@@ -13,7 +13,7 @@ class DivideAndConquerStrategy : public ConvexHullStrategy<T> {
     private:
         std::vector<Punto<T>> joinHulls(std::vector<Punto<T>> &leftHull, std::vector<Punto<T>> &rightHull);
         std::vector<Punto<T>> applyRecursive(std::vector<Punto<T>> &cloud);
-        inline bool isMoreCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest = true);
+        inline bool isMoreCCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest = true);
 };
 
 #endif

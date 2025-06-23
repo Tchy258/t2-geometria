@@ -11,7 +11,7 @@ class ConvexHullStrategy {
         virtual Poligono<T> apply(std::vector<Punto<T>> &cloud) = 0;
         virtual std::string name() = 0;
     protected:
-        inline bool isMoreCCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest = true) {
+        inline bool isMoreCW(Punto<T> &reference, Punto<T>& currentBest, Punto<T>& newCandidate, bool keepFarthest = true) {
             Vector<T> old = Vector<T>(currentBest - reference);
             Vector<T> current = Vector<T>(newCandidate - reference);
             T crossProduct = old.productoCruz(current).getCoords().getZ();
@@ -23,9 +23,9 @@ class ConvexHullStrategy {
             T distA = old.magnitud2();
             T distB = current.magnitud2();
             if (keepFarthest) {
-                return distB >= distA;
+                return distB > distA;
             } else {
-                return distB < distA;
+                return distB <= distA;
             }
         }
 };

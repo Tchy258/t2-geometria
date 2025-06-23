@@ -24,7 +24,7 @@ Poligono<T> GiftWrappingStrategy<T>::apply(std::vector<Punto<T>> &cloud)
         
         for (unsigned long long j = 0; j < n; ++j) {
             if (j == pointOnHullIndex) continue;
-            if (this->isMoreCCW(cloud[pointOnHullIndex], cloud[next], cloud[j])) {
+            if (this->isMoreCW(cloud[pointOnHullIndex], cloud[next], cloud[j])) {
                 next = j;
             }
         }
