@@ -13,7 +13,7 @@ S_values = [123]
 # Paths
 MAIN = Path("./build/release/src/performance_testers").resolve()
 CURRENT_DIR = Path.cwd()
-MAX_PARALLEL = 4  # Max number of concurrent processes
+MAX_PARALLEL = 6  # Max number of concurrent processes
 
 def run_executable(exe_path, args):
     try:
@@ -66,5 +66,7 @@ def process_simple_dir(subdir):
 if __name__ == "__main__":
     process_outer_circle()
     process_simple_dir("random_points")
-    process_simple_dir("non_colinear")
-    process_simple_dir("at_least_three_colinear")
+    # No usar antes de cambiar los tamaños a algo pequeño, por ejemplo 100,
+    # ya que verificar si ya 10000 puntos son no colineales toma aproximadamente 8 horas
+    #process_simple_dir("random_points/non_colinear")
+    process_simple_dir("random_points/at_least_three_colinear")
