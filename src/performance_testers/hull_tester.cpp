@@ -69,6 +69,7 @@ void HullTester<T>::timeAndTest(unsigned int amountOfTimesPerSize, std::vector<s
         }
         row << std::endl;
         file << row.str();
+        file.flush();
     }
     file.close();
 }
