@@ -22,5 +22,5 @@ int main(int argc, char** argv) {
     auto strategy = std::unique_ptr<PointGenerationStrategy<double>>(new NonColinearPointsStrategy<double>());
     auto hullStrategy = std::unique_ptr<GiftWrappingStrategy<double>>(new GiftWrappingStrategy<double>());
     auto hullStrategy2 = std::unique_ptr<DivideAndConquerStrategy<double>>(new DivideAndConquerStrategy<double>());
-    executeTest<double>(atoi(argv[1]), filename, -159200.0, 159200.0, seed, std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
+    executeTest<double>(atoi(argv[1]), filename, -200000.0, 200000.0, seed, std::move(strategy), std::move(hullStrategy), std::move(hullStrategy2));
 }
