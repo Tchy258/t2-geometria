@@ -2,18 +2,18 @@ import os
 import subprocess
 import itertools
 from pathlib import Path
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Parameters
 times = [5]
-percentage_on_hull = [0.001, 0.01, 0.10, 0.30, 0.50, 0.70, 1.00]
+percentage_on_hull = [0.0001, 0.001, 0.01, 0.10, 0.30, 0.50, 0.70, 1.00]
 colinear_amount = [0, 3, 10]
 seed = [123]
 
 # Paths
 MAIN = Path("./build/release/src/performance_testers").resolve()
 CURRENT_DIR = Path.cwd()
-MAX_PARALLEL = 6  # Max number of concurrent processes
+MAX_PARALLEL = 5  # Max number of concurrent processes
 
 def run_executable(exe_path, args):
     try:
@@ -35,11 +35,11 @@ def process_outer_circle():
     exe_files = list(dir_path.glob("*.exe"))
     tasks = []
 
-    with ProcessPoolExecutor(max_workers=MAX_PARALLEL) as executor:
+    with ThreadPoolExecutor(max_workers=MAX_PARALLEL) as executor:
         for exe in exe_files:
             basename = CURRENT_DIR / exe.stem
             for T, P, C, S in itertools.product(times, percentage_on_hull, colinear_amount, seed):
-                N = f"{basename}_{P}_{C}.csv"
+                N = f"{basename}_{int(P*100) if P * 100 > 1 else P*100}_{C}.csv"
                 args = [T, P, C, S, str(N)]
                 tasks.append(executor.submit(run_executable, exe, args))
 
@@ -51,7 +51,7 @@ def process_simple_dir(subdir):
     exe_files = list(dir_path.glob("*.exe"))
     tasks = []
 
-    with ProcessPoolExecutor(max_workers=MAX_PARALLEL) as executor:
+    with ThreadPoolExecutor(max_workers=MAX_PARALLEL) as executor:
         for exe in exe_files:
             basename = CURRENT_DIR / exe.stem
             for T, S in itertools.product(times, seed):
