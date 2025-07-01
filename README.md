@@ -138,7 +138,7 @@ Para probar los algoritmos de cerradura convexa, se dispone de los ejecutables e
 ```bash
 $ ./LLHullTest.exe <veces> <porcentaje en la cerradura> [<cantidad de puntos colineales>] [semilla] [path de salida]
 ```
-Donde `veces` es la cantidad de veces que los algoritmos se deben correr sobre un conjunto (distinto) de tamaño fijo, los tamaños están fijos en 10000, 100000 y 1000000 como solicita el enunciado, `porcentaje en la cerradura` es un valor entre 0 y 100 que determina el porcentaje de puntos que forman parte del círculo que será la cerradura convexa (o un subconjunto de ella en caso de tener puntos colineales), `cantidad de puntos colineales`, como dice su nombre, es la cantidad de puntos colineales deseada que formarán parte del círculo, por defecto se asume que no hay colineales, `semilla` es la semilla que utilizará el generador de números aleatorios para generar el conjunto de puntos, por defecto la semilla es 123, finalmente `path de salida` es una ruta (ya sea absoluta o relativa) a un archivo en el cual se escribirán los tiempos de ejecución en formato csv.
+Donde `veces` es la cantidad de veces que los algoritmos se deben correr sobre un conjunto (distinto) de tamaño fijo, los tamaños están fijos en 10000, 100000 y 1000000 como solicita el enunciado, `porcentaje en la cerradura` es un valor entre 0.0 y 1.0 que determina el porcentaje de puntos que forman parte del círculo que será la cerradura convexa (o un subconjunto de ella en caso de tener puntos colineales), `cantidad de puntos colineales`, como dice su nombre, es la cantidad de puntos colineales deseada que formarán parte del círculo, por defecto se asume que no hay colineales, `semilla` es la semilla que utilizará el generador de números aleatorios para generar el conjunto de puntos, por defecto la semilla es 123, finalmente `path de salida` es una ruta (ya sea absoluta o relativa) a un archivo en el cual se escribirán los tiempos de ejecución en formato csv.
 
 - `random_points`: Estos ejecutables generan conjuntos de puntos totalmente aleatorios con la sola restricción de tener un valor mínimo y máximo según el tipo de dato. Estos se pueden ejecutar de la forma siguiente
 ```bash
@@ -151,4 +151,14 @@ Donde los parámetros `veces`, `semilla` y `path de salida` significan lo mismo 
 - `random_points/non_colinear`: Lo opuesto del anterior, este asegura que no habrá ningún trio de puntos colineales en el conjunto de puntos. Se ejecutan de la misma manera que `random_points`.
 
 
-Para facilitar la ejecución de estas prueba se dispone de los scripts `run_benchmarks_windows.py` y `run_benchmarks_unix.py` que requieren Python3.11+ y se encargan de correr los algoritmos según la plataforma correspondiente asumiendo que el código ya fue compilado. Estos scripts correran por cada tipo de dato, 5 veces los algoritmos, con porcentajes en la cerradura (si corresponde) de 10%, 30%, 50%, 70% y 100%, con cantidad de puntos colineales (si correponde) de 0, 3 y 10 y con la semilla por defecto 123. Luego guardará los resultados en el directorio actual con el formato `<nombre_del_ejecutable>_<porcentaje_en_la_cerradura>_<colineales>.csv`
+Para facilitar la ejecución de estas prueba se dispone de los scripts `run_benchmarks_windows.py` y `run_benchmarks_unix.py` que requieren Python3.11+ y se encargan de correr los algoritmos según la plataforma correspondiente asumiendo que el código ya fue compilado. Estos scripts correran por cada tipo de dato, 5 veces los algoritmos, con porcentajes en la cerradura (si corresponde) de 0.01%, 0.1%, 10%, 30%, 50%, 70% y 100%, con cantidad de puntos colineales (si correponde) de 0, 3 y 10 y con la semilla por defecto 123. Luego guardará los resultados en el directorio actual con el formato `<nombre_del_ejecutable>_<porcentaje_en_la_cerradura>_<colineales>.csv`
+
+## Análisis de datos
+En el archivo [convex_hull_analysis.ipynb](convex_hull_analysis.ipynb) se encuentra el código que recolecta toda la información de los archivos csv generados por el script anterior (esperando que estén en una carpeta llamada `data`), los grafica bajo distintos criterios y los guarda en formato svg.
+El archivo ANALISIS.pdf contiene un análisis más profundo y detalles de la implementación.
+Notar que antes de ejecutar este jupyter notebook es necesario incializar un entorno virtual e instalar las dependencias presentes en `requirements.txt` con los comandos
+```bash
+$ python -m venv env
+$ source ./env/bin/activate # En windows esto es simplemente ./env/Scripts/Activate.ps1
+$ pip install -r requirements.txt
+```
