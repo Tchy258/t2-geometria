@@ -5,10 +5,10 @@ from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 # Parameters
-T_values = [5]
-P_values = [10, 30, 50, 70, 100]
-C_values = [0, 3, 10]
-S_values = [123]
+times = [5]
+percentage_on_hull = [0.001, 0.01, 0.10, 0.30, 0.50, 0.70, 1.00]
+colinear_amount = [0, 3, 10]
+seed = [123]
 
 # Paths
 MAIN = Path("./build/release/src/performance_testers").resolve()
@@ -41,7 +41,7 @@ def process_outer_circle():
     with ProcessPoolExecutor(max_workers=MAX_PARALLEL) as executor:
         for exe in exe_files:
             basename = CURRENT_DIR / exe.stem
-            for T, P, C, S in itertools.product(T_values, P_values, C_values, S_values):
+            for T, P, C, S in itertools.product(times, percentage_on_hull, colinear_amount, seed):
                 N = f"{basename}_{P}_{C}.csv"
                 args = [T, P, C, S, str(N)]
                 tasks.append(executor.submit(run_executable, exe, args))
@@ -57,7 +57,7 @@ def process_simple_dir(subdir):
     with ProcessPoolExecutor(max_workers=MAX_PARALLEL) as executor:
         for exe in exe_files:
             basename = CURRENT_DIR / exe.stem
-            for T, S in itertools.product(T_values, S_values):
+            for T, S in itertools.product(times, seed):
                 N = f"{basename}.csv"
                 args = [T, S, str(N)]
                 tasks.append(executor.submit(run_executable, exe, args))
@@ -69,5 +69,7 @@ def process_simple_dir(subdir):
 if __name__ == "__main__":
     process_outer_circle()
     process_simple_dir("random_points")
-    process_simple_dir("non_colinear")
-    process_simple_dir("at_least_three_colinear")
+    # No usar antes de cambiar los tamaños a algo pequeño, por ejemplo 100,
+    # ya que verificar si ya 10000 puntos son no colineales toma aproximadamente 8 horas
+    #process_simple_dir("random_points/non_colinear")
+    process_simple_dir("random_points/at_least_three_colinear")
